@@ -793,8 +793,16 @@ end
 
 
 function timetableGUI.timetableCoroutine()
+    local i = 0
+    local vehiclesWithLines = timetableHelper.getAllTimetableRailVehicles(timetable.hasTimetable)
     while true do
-        local vehiclesWithLines = timetableHelper.getAllTimetableRailVehicles(timetable.hasTimetable)
+        i = i + 1
+        -- this 20 means every secoind on an empty map (2 lines)
+        -- It is about 15 seconds of my big map
+        if i > 20 then
+            vehiclesWithLines = timetableHelper.getAllTimetableRailVehicles(timetable.hasTimetable)
+            i = 0
+        end
         for _,vehicle in pairs(vehiclesWithLines) do
             if timetableHelper.isInStation(vehicle) then
                 if timetable.waitingRequired(vehicle) then
